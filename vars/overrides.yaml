@@ -1,0 +1,42 @@
+#
+# variables with a single # specify the default value if you leave commented
+# dev environment
+#    Single # before the name of the variable shows the default value
+# prod environment: 
+#    Double ## before the name of a variable mean you MUST configure the variable. The default value will not work
+#
+
+#
+# Baikal settings
+#
+#baikal_timezone: Europe/Paris
+#baikal_published_port: 0.0.0.0:8081
+
+#
+# Agendav settings
+#
+#agendav_timezone: Europe/Paris
+#agendav_weekstart: 1
+#agendav_lang: en
+
+#
+# Agendav settings you may want to change when in dev mode (the default)
+#
+#agendav_environment: dev
+#agendav_server_name: agendav
+#agendav_caldav_public_url: 127.0.0.1:8081
+
+#
+# Agendav settings you MUST configure when agendav in prod mode
+#  I operate behind a reverse proxy running on my docker host
+#  so the settings here reflect my environment
+#  If the reverse proxy is on the same machine you can configure
+#        agendav_published_port: 127.0.0.1:8080
+#        baikal_published_port: 127.0.0.1:8081
+#
+##agendav_environment: prod
+##agendav_server_name: agendav.test.lekerpont.fr
+##agendav_caldav_public_url: baikal.test.lekerpont.fr
+##agendav_published_port: 0.0.0.0:8080
+##baikal_published_port: 0.0.0.0:8081
+

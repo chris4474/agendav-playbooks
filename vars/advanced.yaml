@@ -1,0 +1,71 @@
+#
+# Do not modify this file unless you know exactly what you are doing
+#
+
+compose_folder: "{{ playbook_dir }}/stack"
+
+#
+# the baikal_db_* variables are used
+#   1- by the playbook which creates the database for use by Baikal
+#   2- by the playbook which creates the config file which is used by baikal to connect the databse
+
+#
+#
+# mariadb settings
+#
+mariadb_root_password: "{{ secret_mariadb_root_password }}"
+mariadb_host: mariadb
+
+#
+# agendav database
+#
+agendav_db_database: agendav
+agendav_db_user: agendav
+agendav_db_password: "{{ secret_agendav_db_password }}"
+
+#
+# baikal database
+#
+baikal_db_database: baikal
+baikal_db_user: baikal
+baikal_db_password: "{{ secret_baikal_db_password }}"
+
+
+#
+# baikal settings
+#
+baikal_timezone: Europe/Paris
+baikal_admin_password: "{{ secret_baikal_admin_password }}"
+baikal_encryption_key: "{{ secret_baikal_encryption_key }}"
+baikal_published_port: 0.0.0.0:8081    # you will be able to access baikal ffrom the outside
+
+#
+# agendav settings
+#
+
+agendav_caldav_server: http://baikal/cal.php/ # do not change
+
+#
+# dev mode (http only) (the default)
+#
+agendav_environment: dev
+agendav_server_name: agendav
+agendav_caldav_public_url: 127.0.0.1:8081
+
+
+#
+# common to both modes (dev and prod).
+#
+agendav_published_port: 0.0.0.0:8080 
+agendav_timezone: Europe/Paris
+agendav_weekstart: 1
+agendav_lang: en
+
+#
+# Prod mode: you MUST override the following variables in vars/override.yaml
+#   the default values will likely not work
+#
+#agendav_environment: prod
+#agendav_server_name: agendav.example.com
+#agendav_caldav_public_url: baikal.example.com
+

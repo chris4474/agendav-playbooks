@@ -1,0 +1,19 @@
+- name: create the baikal DB and its schema
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - secrets.yaml
+    - vars/advanced.yaml
+    - vars/overrides.yaml
+
+  tasks:
+
+    - name: Create the baikal database
+      ansible.builtin.import_tasks:
+        file: tasks/create_baikal_db.yaml 
+
+    - name: Create agendav db
+      ansible.builtin.import_tasks:
+        file: tasks/create_agendav_db.yaml 
+

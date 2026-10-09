@@ -1,0 +1,16 @@
+
+- name: Create a directory for mariadb
+  ansible.builtin.file:
+    path: "{{ compose_folder }}/mariadb"
+    state: directory
+
+- name: generate mariadb env file
+  ansible.builtin.template:
+    src: templates/mariadb_env.j2
+    dest: "{{ compose_folder }}/mariadb/.env"
+
+- name: generate mariadb compose file
+  ansible.builtin.template:
+    src: templates/mariadb_compose.j2
+    dest: "{{ compose_folder }}/mariadb/compose.yaml"
+

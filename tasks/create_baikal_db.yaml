@@ -1,0 +1,42 @@
+
+    - name: Créer la base de données {{ baikal_db_database }}
+      ansible.mariadb.mariadb_db:
+        login_host: 127.0.0.1
+        login_user: root
+        login_password: "{{ mariadb_root_password }}"
+        name: "{{ baikal_db_database }}"
+        state: present
+        encoding: utf8mb4
+        collation: utf8mb4_unicode_ci
+
+    - name: Créer l'utilisateur associé et lui donner les droits
+      ansible.mariadb.mariadb_user:
+        login_host: 127.0.0.1
+        login_user: root
+        login_password: "{{ mariadb_root_password }}"
+        name: "{{ baikal_db_user }}"
+        password: "{{ baikal_db_password }}"
+        priv: "{{ baikal_db_database }}.*:ALL"
+        host: "%"
+        state: present
+
+    - name: Vérifier si la table calendars existe déjà
+      ansible.builtin.shell: |
+        mariadb --skip-ssl              \
+           -h 127.0.0.1                 \
+           -u {{ baikal_db_user }}      \
+           -p'{{ baikal_db_password }}' \
+           {{ baikal_db_database }}     \
+           -e "SHOW TABLES LIKE 'calendars';"
+      register: table_check
+      changed_when: false
+
+    - name: Importer le fichier SQL initial dans la base Baikal
+      ansible.builtin.shell: |
+        mariadb --skip-ssl              \
+          -h 127.0.0.1                  \
+          -u {{ baikal_db_user }}       \
+          -p'{{ baikal_db_password }}'  \
+          {{ baikal_db_database }}         < files/baikal.sql
+      when: table_check.stdout == ""
+

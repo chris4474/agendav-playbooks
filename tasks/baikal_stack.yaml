@@ -1,0 +1,21 @@
+
+- name: Create a directoryfor baikal
+  ansible.builtin.file:
+    path: "{{ compose_folder }}/baikal"
+    state: directory
+
+- name: generate baikal env file
+  ansible.builtin.template:
+    src: templates/baikal_env.j2
+    dest: "{{ compose_folder }}/baikal/.env"
+
+- name: generate baikal compose file
+  ansible.builtin.template:
+    src: templates/baikal_compose.j2
+    dest: "{{ compose_folder }}/baikal/compose.yaml"
+
+- name: generate Baika config file
+  ansible.builtin.template:
+    src: templates/baikal_config.j2
+    dest: "{{ compose_folder }}/baikal/baikal_config.yaml"
+

@@ -1,0 +1,24 @@
+system:
+    configured_version: 0.12.1
+    timezone: {{ baikal_timezone }}
+    card_enabled: true
+    cal_enabled: true
+    dav_auth_type: Basic
+    admin_passwordhash: "{{ ('admin:BaikalDAV:' ~ baikal_admin_password ) | hash('sha256') }}"
+    failed_access_message: 'user %u authentication failure for Baikal'
+    auth_realm: BaikalDAV
+    base_uri: ''
+    invite_from: ''
+database:
+    sqlite_file: /var/www/baikal/Specific/db/db.sqlite
+    backend: mysql
+    mysql_host: {{ mariadb_host }}
+    mysql_dbname: {{ baikal_db_database }}
+    mysql_username: {{ baikal_db_user }}
+    mysql_password: {{ baikal_db_password }}
+    mysql_ca_cert: ''
+    encryption_key: {{ baikal_encryption_key }}
+    pgsql_host: ''
+    pgsql_dbname: ''
+    pgsql_username: ''
+    pgsql_password: ''

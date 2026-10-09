@@ -1,0 +1,17 @@
+- name: generate deploy.sh
+  ansible.builtin.template:
+    src: templates/deploy.sh.j2
+    dest: "{{ compose_folder }}/deploy.sh"
+    mode: "0755"
+
+- name: generate teardown.sh
+  ansible.builtin.template:
+    src: templates/teardown.sh.j2
+    dest: "{{ compose_folder }}/teardown.sh"
+    mode: "0755"
+
+- name: generate shudtown.sh
+  ansible.builtin.template:
+    src: templates/shutdown.sh.j2
+    dest: "{{ compose_folder }}/shutdown.sh"
+    mode: "0755"

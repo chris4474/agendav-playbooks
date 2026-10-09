@@ -1,0 +1,22 @@
+services:
+  baikal:
+    image: ghcr.io/aalmenar/baikal:latest
+    container_name: baikal
+    networks:
+      - mariadb_network
+    restart: unless-stopped
+    # Pas besoin d'exposer Baïkal publiquement si seul Agendav lui parle,
+    # mais vous pouvez ajouter des ports (ex: "8081:80") si vous voulez accéder à son panneau d'admin web.
+    ports:
+      - {{ baikal_published_port }}:80
+    volumes:
+      - baikal_config:/var/www/baikal/config
+      - baikal_data:/var/www/baikal/Specific
+      - ./baikal_config.yaml:/var/www/baikal/config/baikal.yaml
+volumes:
+  baikal_config:
+  baikal_data:
+ 
+networks:
+  mariadb_network:
+    external: true

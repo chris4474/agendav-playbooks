@@ -1,0 +1,4 @@
+secrets.yaml
+# Ignore all contents inside my_directory
+stack/*
+!stack/.gitkeep

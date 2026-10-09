@@ -1,0 +1,26 @@
+- name: Creation du Stack Agendav
+  hosts: localhost
+  connection: local
+#  gather_facts: false
+  vars_files:
+    - secrets.yaml
+    - vars/advanced.yaml
+    - vars/overrides.yaml
+
+  tasks:
+
+    - name: Build Baikal Docker Compose files
+      ansible.builtin.import_tasks:
+        file: tasks/baikal_stack.yaml 
+
+    - name: Build Agendav Docker Compose files
+      ansible.builtin.import_tasks:
+        file: tasks/agendav_stack.yaml 
+
+    - name: Build mariadb Docker Compose files
+      ansible.builtin.import_tasks:
+        file: tasks/mariadb_stack.yaml 
+
+    - name: Build the script utilities *deploy.sh and teardown.sh"
+      ansible.builtin.import_tasks:
+        file: tasks/buildscripts.yaml

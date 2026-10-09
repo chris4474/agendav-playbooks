@@ -1,0 +1,16 @@
+
+- name: Create a directory for agendav
+  ansible.builtin.file:
+    path: /{{ compose_folder }}/agendav
+    state: directory
+
+- name: generate agendav env file
+  ansible.builtin.template:
+    src: templates/agendav_env.j2
+    dest: /{{ compose_folder }}/agendav/.env
+
+- name: generate agendav compose file
+  ansible.builtin.template:
+    src: templates/agendav_compose.j2
+    dest: /{{ compose_folder }}/agendav/compose.yaml
+

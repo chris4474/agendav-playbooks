@@ -1,13 +1,17 @@
 - name: Creation du Stack Agendav
   hosts: localhost
   connection: local
-#  gather_facts: false
+  gather_facts: no
   vars_files:
     - secrets.yaml
     - vars/advanced.yaml
     - vars/overrides.yaml
 
   tasks:
+    - name: Full Stack or Standalone compose files
+      ansible.builtin.set_fact:
+        generate_full_stack: True
+      when: standalone is not defined
 
     - name: Build Baikal Docker Compose files
       ansible.builtin.import_tasks:
@@ -21,14 +25,20 @@
       ansible.builtin.import_tasks:
         file: tasks/mariadb_stack.yaml 
 
-#
-# we don't need db-init as the user is supposed to deploy/start/stop the components individually
-#
-#    - name: Build db-init Docker Compose files
-#      ansible.builtin.import_tasks:
-#        file: tasks/db-init_stack.yaml
+    - name: Build db-init Docker Compose files
+      ansible.builtin.import_tasks:
+        file: tasks/db-init_stack.yaml
+      when: generate_full_stack is defined
+
+    - name: Full Stack assembly
+      ansible.builtin.include_tasks:
+        file: tasks/fullstack_assembly.yaml
+      when: generate_full_stack is defined
 
     - name: Build utilities
       ansible.builtin.import_tasks:
         file: tasks/buildscripts.yaml
+      when: standalone is defined
+
+
 

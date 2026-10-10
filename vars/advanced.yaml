@@ -2,7 +2,7 @@
 # Do not modify this file unless you know exactly what you are doing
 #
 
-compose_folder: "{{ playbook_dir }}/stack"
+compose_folder: "{{ playbook_dir }}/agendav-stack"
 
 #
 # the baikal_db_* variables are used
@@ -60,7 +60,7 @@ agendav_published_port: 0.0.0.0:8080
 agendav_timezone: Europe/Paris
 agendav_weekstart: 1
 agendav_lang: en
-agendav_title: "Agendav Calendar v0.1.0"
+agendav_title: "Agendav Calendar v8.5 (playbook v0.3.0)"
 agendav_footer: "Agendav Default Footer"
 
 #

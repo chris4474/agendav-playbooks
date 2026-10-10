@@ -28,9 +28,9 @@ network access to pull the docker images
 
 ## Preparations
 
-The diagram below shows the directory structure of the playbooks. The actual structure may differ slightly but the main files are shown
+The diagram below shows the directory structure of the playbooks. The actual structure may differ slightly but the main files are shown below:
 
-![](./docs/2026-10-09-09-37-04-image.png)
+![](docs/2026-10-10-23-44-39-image.png)
 
 `ansible.cfg`: By default this file specifies the name of the file which contains your password for the ansible vault. You will have to create this file and put your vault password there if you use `ansible-vault` to encrypt the `secrets.yaml` file (recommended).  It also configures the default ansible inventory to be the `hosts` file in the same directoy. I recommend you open it to see exactly what it does,
 

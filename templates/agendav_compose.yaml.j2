@@ -1,0 +1,21 @@
+services:
+  agendav:
+    image: gitea.symphorines.home/chris/agendav:latest
+    pull_policy: always
+{% if generate_full_stack | default(false) %}
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+{% endif %}
+    networks:
+    - mariadb_network
+    restart: unless-stopped
+    ports:
+    - {{ agendav_published_port }}:8080
+    env_file:
+      - .env
+networks:
+  mariadb_network:
+    external: true

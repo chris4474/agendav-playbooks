@@ -1,0 +1,22 @@
+#!/bin/bash
+source_dir=./init_db.d
+
+echo "Checking presence of {{ baikal_db_database }} DB schema..."
+response=$(mariadb --skip-ssl -h{{ mariadb_host }} -u{{ baikal_db_user }} -p{{ baikal_db_password }} {{ baikal_db_database }} -e "SHOW TABLES LIKE 'calendars';" | grep calendars)
+status=$?
+if [ $status -eq 0 ]
+then
+  echo "Baikal DB schema already loaded. Nothing to do"
+  exit 0
+fi
+
+echo "Attempting to load the baikal DB schema"
+response=$(mariadb --skip-ssl -h{{ mariadb_host }}  -u{{ baikal_db_user }} -p{{ baikal_db_password }}  {{ baikal_db_database }} < $source_dir/zzz-baikal-db-schema.sql )
+status=$?
+if [  $status -eq 0 ]
+then
+  echo "Baikal DB Schema successfully loaded"
+else
+  echo "Failed to Load the baikal DB Schema"
+fi
+exit $status

@@ -1,12 +1,16 @@
 services:
   baikal:
     image: ghcr.io/aalmenar/baikal:latest
-    container_name: baikal
+{% if generate_full_stack | default(false) %}
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+{% endif %}
     networks:
       - mariadb_network
     restart: unless-stopped
-    # Pas besoin d'exposer Baïkal publiquement si seul Agendav lui parle,
-    # mais vous pouvez ajouter des ports (ex: "8081:80") si vous voulez accéder à son panneau d'admin web.
     ports:
       - {{ baikal_published_port }}:80
     volumes:

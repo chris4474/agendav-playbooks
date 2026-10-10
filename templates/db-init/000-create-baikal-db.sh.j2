@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+source_dir=./init_db.d
+echo "Running initial database setup..."
+mariadb --skip-ssl -uroot -p{{ mariadb_root_password }} -h{{ mariadb_host }} < $source_dir/zzz-create-baikal-db.sql
+echo "Initialization complete."
+exit $?
+
+

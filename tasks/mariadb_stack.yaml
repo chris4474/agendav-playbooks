@@ -11,6 +11,6 @@
 
 - name: generate mariadb compose file
   ansible.builtin.template:
-    src: templates/mariadb_compose.j2
+    src: templates/mariadb_compose.yaml.j2
     dest: "{{ compose_folder }}/mariadb/compose.yaml"
 

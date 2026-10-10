@@ -11,6 +11,6 @@
 
 - name: generate agendav compose file
   ansible.builtin.template:
-    src: templates/agendav_compose.j2
+    src: templates/agendav_compose.yaml.j2
     dest: /{{ compose_folder }}/agendav/compose.yaml
 

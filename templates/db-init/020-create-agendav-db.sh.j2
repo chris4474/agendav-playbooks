@@ -1,0 +1,8 @@
+#!/bin/bash
+set -ex
+source_dir=./init_db.d
+echo "Creating {{ agendav_db_database }} database ..."
+mariadb --skip-ssl -uroot -p{{ mariadb_root_password }} -h{{ mariadb_host }} < ${source_dir}/zzz-create-agendav-db.sql
+exit $?
+
+

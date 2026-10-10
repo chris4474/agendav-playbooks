@@ -21,6 +21,14 @@
       ansible.builtin.import_tasks:
         file: tasks/mariadb_stack.yaml 
 
-    - name: Build the script utilities *deploy.sh and teardown.sh"
+#
+# we don't need db-init as the user is supposed to deploy/start/stop the components individually
+#
+#    - name: Build db-init Docker Compose files
+#      ansible.builtin.import_tasks:
+#        file: tasks/db-init_stack.yaml
+
+    - name: Build utilities
       ansible.builtin.import_tasks:
         file: tasks/buildscripts.yaml
+

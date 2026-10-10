@@ -1,0 +1,40 @@
+
+- name: Create a directory for db-init
+  ansible.builtin.file:
+    path: "{{ compose_folder }}/db-init"
+    state: directory
+
+- name: Create a directory for scripts
+  ansible.builtin.file:
+    path: "{{ compose_folder }}/db-init/init_db.d"
+    state: directory
+
+#- name: generate dn-init env file
+#  ansible.builtin.template:
+#    src: templates/db-init_env.j2
+#    dest: "{{ compose_folder }}/db-init/.env"
+
+- name: generate db-init compose file
+  ansible.builtin.template:
+    src: templates/db-init_compose.yaml.j2
+    dest: "{{ compose_folder }}/db-init/compose.yaml"
+
+- name: Copy init_db.sh script
+  ansible.builtin.copy:
+    src: ./files/init_db.sh
+    dest: "{{ compose_folder }}/db-init/init_db.sh"
+    mode: '0766'
+
+- name: Generate script files from templates
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ compose_folder }}/db-init/init_db.d/{{ item | basename | regex_replace('\\.j2$', '') }}"
+    mode: '0755'
+  loop:
+    - templates/db-init/000-create-baikal-db.sh.j2
+    - templates/db-init/010-load-baikal-db-schema.sh.j2
+    - templates/db-init/020-create-agendav-db.sh.j2
+    - templates/db-init/zzz-create-agendav-db.sql.j2
+    - templates/db-init/zzz-baikal-db-schema.sql.j2
+    - templates/db-init/zzz-create-baikal-db.sql.j2
+

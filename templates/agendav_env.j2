@@ -1,5 +1,15 @@
-AGENDAV_DB_HOST={{ agendav_db_host | default('mariadb' ) }}
+AGENDAV_DB_HOST=mariadb
 AGENDAV_DB_DATABASE={{ agendav_db_database }}
 AGENDAV_DB_USER={{ agendav_db_user }}
 AGENDAV_DB_PASSWORD={{ agendav_db_password }}
 AGENDAV_ENVIRONMENT={{ agendav_environment | default ('dev') }}
+
+AGENDAV_SERVER_NAME={{ agendav_server_name }}
+AGENDAV_TITLE={{ agendav_title | default ('Welcome to Agendav') }}
+AGENDAV_FOOTER={{ agendav_footer | default('Agendav footer') }}
+AGENDAV_CALDAV_SERVER={{ agendav_caldav_server }}
+AGENDAV_CALDAV_PUBLIC_URL={{ agendav_caldav_public_url | default('127.0.0.1:8081') }}
+AGENDAV_TIMEZONE={{ agendav_timezone }}
+AGENDAV_LANG={{ agendav_lang  }}
+AGENDAV_WEEKSTART={{ agendav_weekstart }}
+AGENDAV_LOG_DIR=tmp/

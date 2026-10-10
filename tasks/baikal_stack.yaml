@@ -11,7 +11,7 @@
 
 - name: generate baikal compose file
   ansible.builtin.template:
-    src: templates/baikal_compose.j2
+    src: templates/baikal_compose.yaml.j2
     dest: "{{ compose_folder }}/baikal/compose.yaml"
 
 - name: generate Baika config file

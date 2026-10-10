@@ -1,0 +1,17 @@
+services:
+  db-init:
+    image: mariadb:10
+{% if generate_full_stack | default(false) %}
+    depends_on:
+      mariadb:
+        condition: service_healthy
+{% endif %}
+    volumes:
+      - ./init_db.sh:/init_db.sh
+      - ./init_db.d/:/init_db.d/
+    networks:
+      - mariadb_network
+    entrypoint: /init_db.sh
+networks:
+  mariadb_network:
+    external: true

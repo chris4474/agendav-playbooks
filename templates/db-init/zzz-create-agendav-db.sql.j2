@@ -1,0 +1,4 @@
+CREATE DATABASE IF NOT EXISTS `{{ agendav_db_database }}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS '{{ agendav_db_user }}'@'%' IDENTIFIED BY '{{ agendav_db_password }}';
+GRANT ALL PRIVILEGES ON `{{ agendav_db_database }}`.* TO '{{ agendav_db_user }}'@'%';
+FLUSH PRIVILEGES;

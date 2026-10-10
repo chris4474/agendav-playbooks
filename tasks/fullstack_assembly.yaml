@@ -1,0 +1,11 @@
+
+- name: Create a directory for agendav
+  ansible.builtin.file:
+    path: /{{ compose_folder }}/agendav
+    state: directory
+
+- name: Generate the full stack compose file
+  ansible.builtin.template:
+    src: templates/fullstack_compose.yaml.j2
+    dest: "{{ compose_folder }}/compose.yaml"
+

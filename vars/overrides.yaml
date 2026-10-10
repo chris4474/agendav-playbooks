@@ -18,6 +18,8 @@
 #agendav_timezone: Europe/Paris
 #agendav_weekstart: 1
 #agendav_lang: en
+#agendav_title: "Agendav Calendar v0.1.0"
+#agendav_footer: "Agendav Default footer"
 
 #
 # Agendav settings you may want to change when in dev mode (the default)

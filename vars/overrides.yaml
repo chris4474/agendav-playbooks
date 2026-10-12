@@ -18,7 +18,7 @@
 #agendav_timezone: Europe/Paris
 #agendav_weekstart: 1
 #agendav_lang: en
-#agendav_title: "Agendav Calendar v8.5 (playbook v0.3.0)"
+#agendav_title: "Agendav Calendar v3.3.1 fix (playbook v0.3.0)"
 #agendav_footer: "Agendav Default footer"
 
 #
@@ -37,8 +37,8 @@
 #        baikal_published_port: 127.0.0.1:8081
 #
 ##agendav_environment: prod
-##agendav_server_name: agendav.test.example.com
-##agendav_caldav_public_url: baikal.test.example.com
-##agendav_published_port: 0.0.0.0:8080
-##baikal_published_port: 0.0.0.0:8081
+##agendav_server_name: agendav.test.lekerpont.fr
+##agendav_caldav_public_url: baikal.test.lekerpont.fr
+##gendav_published_port: 0.0.0.0:8080
+##aikal_published_port: 0.0.0.0:8081
 

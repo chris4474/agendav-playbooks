@@ -77,7 +77,7 @@ Before you can login in `agendav` you need to create a user (and a calendar) in 
 
 If you chose the `dev` environment, the baikal UI can be opened at `http://<ip address_of_your_docker host>:8081`
 
-**note** If you chose the `prod` environment, you will have to configure baikal behind a reverse proxy using https.
+**note** If you chose the `prod` environment, you will have to access baikal and agendav over https. A reverse proxy  is your best frined in this case.
 
 ## Appendix: prod mode deployment
 
@@ -105,7 +105,7 @@ I can then create users in baikal by opening https://baikal.test.mydomain.fr
 
 agendav is at https://agendav.test.mydomain.fr
 
-note: if you try to reach agendav directly on the host where the stack is deployed using http://<ip_address_of_host>:8080/ you will see the login screen but will not bale able to login (invalid CSRF token)
+**note**: if you try to reach agendav directly on the host where the stack is deployed using http://<ip_address_of_host>:8080/ you will see the login screen but will not bale able to login (invalid CSRF token)
 
 ![](./docs/2026-10-09-17-44-28-invalid-csrf-token.png)
 

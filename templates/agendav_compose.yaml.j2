@@ -1,6 +1,6 @@
 services:
   agendav:
-    image: gitea.symphorines.home/chris/agendav:latest
+    image: {{ agendav_image }}
     pull_policy: always
 {% if generate_full_stack | default(false) %}
     depends_on:

@@ -71,3 +71,4 @@ agendav_footer: "Agendav Default Footer"
 #agendav_server_name: agendav.example.com
 #agendav_caldav_public_url: baikal.example.com
 
+agendav_image: "ghcr.io/chris4474/agendav-docker:3.3.1"

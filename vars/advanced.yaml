@@ -60,7 +60,7 @@ agendav_published_port: 0.0.0.0:8080
 agendav_timezone: Europe/Paris
 agendav_weekstart: 1
 agendav_lang: en
-agendav_title: "Agendav Calendar v8.5 (playbook v0.3.0)"
+agendav_title: "Agendav Calendar 3.3.1 (playbook 3.3.1)"
 agendav_footer: "Agendav Default Footer"
 
 #
@@ -71,4 +71,4 @@ agendav_footer: "Agendav Default Footer"
 #agendav_server_name: agendav.example.com
 #agendav_caldav_public_url: baikal.example.com
 
-agendav_image: "ghcr.io/chris4474/agendav-docker:3.3.1"
+agendav_image: "ghcr.io/chris4474/agendav-docker:playbooks-3.3.1"

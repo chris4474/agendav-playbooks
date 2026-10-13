@@ -70,7 +70,6 @@ Before you can deploy the stack you need to create the network named `mariadb_ne
 
 `$ docker network create mariadb_network`
 
-
 You are now ready to deploy the stack:
 
 ```

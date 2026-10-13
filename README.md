@@ -1,5 +1,7 @@
 # Agendav playbooks v3.3.1
 
+## Make sure you select the tag 3.3.1
+
 ## Introduction
 
 The purpose of these ansible playbooks is to generate a docker compose file which will be used to deploy a complete [agendav ](https://github.com/agendav/agendav))stack.
@@ -64,7 +66,12 @@ In the `agendav-stack` directory you will also find sub-directory, one for each 
 
 ## Deploy the whole stack in one shot
 
-To deploy the stack use docker compose up
+Before you can deploy the stack you need to create the network named `mariadb_network`.
+
+`$ docker network create mariadb_network`
+
+
+You are now ready to deploy the stack:
 
 ```
 cd agendav-stack

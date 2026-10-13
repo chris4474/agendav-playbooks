@@ -1,6 +1,5 @@
 # Agendav playbooks v3.3.1
 
-## Make sure you select the tag 3.3.1
 
 ## Introduction
 

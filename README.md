@@ -1,8 +1,8 @@
-# Agendav playbooks
+# Agendav playbooks v3.3.1
 
 ## Introduction
 
-The purpose of these ansible playbooks is to generate a number of files, including docker compose files which can be used to deploy a complete agendav stack.
+The purpose of these ansible playbooks is to generate a docker compose file which will be used to deploy a complete [agendav ](https://github.com/agendav/agendav))stack.
 
 The diagram below represents the stack configured by the playbooks. 
 
@@ -16,31 +16,39 @@ In the appendix, I explain how I deploy agendav in prod mode in my environment
 
 ## Prerequisites
 
-A linux machine where you can deploy the stack  with the following software (the version correspond to the software I have on my own server)
+I deploy on Ubuntu server 26.04 with 
 
-docker 29.8.2
+- docker 29.8.2 (Community)
 
-ansible 2.20
+- ansible 2.20
 
-mariadb client tools (11.8.6)
+- git (I have 2.53.0)
 
-network access to pull the docker images
+You will also need a network access to pull the docker images
+
+The agendav image being used can be found [here](https://github.com/chris4474/agendav-docker). This is a fork of [nagimov/agendav-docker](https://github.com/nagimov/agendav-docker). 
 
 ## Preparations
+
+```bash
+git clone https://github.com/chris4474/agendav-playbooks.git
+cd agendav-playbooks
+git checkout 3.3.1
+```
 
 The diagram below shows the directory structure of the playbooks. The actual structure may differ slightly but the main files are shown below:
 
 ![](docs/2026-10-10-23-44-39-image.png)
 
-`ansible.cfg`: By default this file specifies the name of the file which contains your password for the ansible vault. You will have to create this file and put your vault password there if you use `ansible-vault` to encrypt the `secrets.yaml` file (recommended).  It also configures the default ansible inventory to be the `hosts` file in the same directoy. I recommend you open it to see exactly what it does,
+`ansible.cfg`: By default this file specifies the name of a file which contains your password if you decide to encrypt `secrets.yaml` with ansible-vault. . You will have to create this file and put your vault password there.   `ansible.cfg` also specifies a default ansible inventory which happens to be the `hosts` file in the same directory. I recommend you open it to see exactly what it does,
 
-`secrets.yaml`, This file  contains all the secrets that you need to configure before deploying the stack. This is where you store credentials (root password of the mariadb engine, database users, baikal admin password etc). I recommend you use <span style="white-space: nowrap;">*ansible-vault* </span> to create and encrypt this file. The file secrets.template can be used as a template.
+`secrets.yaml`, This file  contains all the secrets that you need to configure before deploying the stack. This is where you store credentials (root password of the mariadb engine, database users, baikal admin password etc). The file secrets.template can be used as a template. 
 
  `vars/overrides.yaml`. This is where you can change the easy stuff such as timezones, start of week (1 for monday, 0 for sunday)  and language.
 
 `vars/advanced.yaml` You are not supposed to make changes here unless you know exactly what you are doing and have a good understanding of how ansible playbooks work.
 
-By default, if you make no change to the files in the `vars/`  directory the playbook will configure agendav in `dev` mode (with debug options enabled in the code) and you will be able to access baikal and agendav from the outside (inside =being the docker host where you deploy the stack)
+By default, if you make no change to the files in the `vars/`  directory the playbook will configure agendav in `dev` mode (with debug options enabled in the code) and you will be able to access baikal and agendav from the outside (inside=being the docker host where you deploy the stack)
 
 ## Generating the Docker compose files (and more)
 
@@ -52,7 +60,7 @@ If not present the directory `agendav-stack`is created  which will contain every
 
 In the `agendav-stack` directory you will also find sub-directory, one for each component , `mariadb`, `baikal` `agendav` and`db-init container`. 
 
-**note**: the db-init component is the component which creates the two databases and loads the DB schema used by à `baikal`.
+**note**: the db-init component is the component which creates the two databases and loads the DB schema required by  `baikal`.
 
 ## Deploy the whole stack in one shot
 
@@ -63,61 +71,13 @@ cd agendav-stack
 docker compose up -d
 ```
 
-## Deploy manually
-
-You can also deploy each component manually. 
-
-```
-$ $ansible-playbook -e standalone=yes buildstack.com
-```
-
-This generates the same files and sub-folders in the `agendav-stack` directory as before except for the folder `db-init`. (if you deploy manually you will have to create the databases manually)
-
-### Deploy the mariadb engine and create the databases
-
-```bash
-$ cd ./stack/mariadb
-$ docker compose up -d
-```
-
-You can now create the two databases. For the baikal database we also need to load the DB schema. Agendav will take care of this when we deploy the container. A user if also created for each database.
-
-```bash
-$ cd <git folder>
-$ ansible-playbook create_DBs.yaml
-```
-
-### Deploy Baikal
-
-```bash
-$ cd ./stack/baikal
-$ docker compose up -d
-```
-
-At this point Baikal is configured according to your settings (timezone, admin password etc) and is ready to use. The initial setup was automated by mean of the baikal_config.yaml file generated by the first playbook
-
-### ### Deploy Agendav
-
- At this point everything is ready for a successfull deployment of agendav. The database that agendav will be using on mariadb is created and agendav will load the DB schema itself. The compose file has all the information required by the container image to setup the connection with the database as well as the connection with baikal
-
-```bash
-$ cd ./stack//agendav
-$ docker compose up -d
-```
-
-## Use Agendav
+## Using agendav
 
 Before you can login in `agendav` you need to create a user (and a calendar) in `baikal`
 
-If you chose the `dev` environment, the baikal UI can be opened at `http://<ip address of docker host>:8081`
+If you chose the `dev` environment, the baikal UI can be opened at `http://<ip address_of_your_docker host>:8081`
 
-**note** If you chose the `prod` environment, you will have to configure baikal behind a reverse proxy. 
-
-***note*** socat is usefull if you deploy on Synology DSM 7.2 In this case I configure baikal_published_port`127.0.0.1:<port>`and then use socat to access the baikal UI from outside `sudo socat TCP-LISTEN:<port>,fork,bind=<host_ip_addr>TCP:127.0.0.1:<port> &`
-
-where: `<port>` is a free port on the machine running baikal and `<host_ip_addr>`is the IP address of this host
-
-Open `http://<IP_Adress_of_Docker_host>:8081` and logon in using the baikal account you created earlier.
+**note** If you chose the `prod` environment, you will have to configure baikal behind a reverse proxy using https.
 
 ## Appendix: prod mode deployment
 
@@ -169,5 +129,3 @@ Because my docker host is a server (no graphical interface) I use `socat` to mir
 ```
 
 When done I can reach the Baikal UI form outside and add users and calendars
-
-to be con'd

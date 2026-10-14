@@ -1,3 +1,4 @@
+version_do_not_delete.txt
 secrets.yaml
 # Ignore all contents inside my_directory
 agendav-stack/*

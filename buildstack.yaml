@@ -8,6 +8,10 @@
     - vars/overrides.yaml
 
   tasks:
+    - name: Compute version string
+      ansible.builtin.import_tasks:
+        file: tasks/playbook_version.yaml 
+     
     - name: Full Stack or Standalone compose files
       ansible.builtin.set_fact:
         generate_full_stack: True

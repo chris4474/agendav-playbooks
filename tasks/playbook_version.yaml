@@ -1,0 +1,33 @@
+    - name: release or git 
+      ansible.builtin.stat:
+        path: "{{ playbook_version_file }}"
+      register: release_file
+
+    - name: Read release file if present
+      ansible.builtin.slurp:
+        src: "{{ playbook_version_file }}"
+      register: release_file_content
+      when: release_file.stat.exists
+
+    - name: Use git if no release file
+      ansible.builtin.command:
+        cmd: git describe --tags --always --dirty
+      register: git_version
+      failed_when: false
+      changed_when: false
+      when: not release_file.stat.exists
+
+    - name: Compute version
+      ansible.builtin.set_fact:
+        playbook_version: >-
+          {%- if release_file.stat.exists -%}
+            {{ release_file_content['content'] | b64decode | trim }}
+          {%- elif git_version.rc == 0 and git_version.stdout != "" -%}
+            {{ git_version.stdout }}
+          {%- else -%}
+            dev-unknown
+          {%- endif -%}
+
+    - name: Display version
+      ansible.builtin.debug:
+        msg: "playbook version: {{ playbook_version }}"

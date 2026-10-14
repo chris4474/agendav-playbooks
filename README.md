@@ -1,5 +1,6 @@
-# Agendav playbooks v3.3.1
+# Agendav playbooks v3.3.1b
 
+(Added some support for Synology DSM 7.* Deployments)
 
 ## Introduction
 
@@ -134,3 +135,47 @@ Because my docker host is a server (no graphical interface) I use `socat` to mir
 ```
 
 When done I can reach the Baikal UI form outside and add users and calendars
+
+
+
+## Deployment on Synology DSM 7.2
+
+The Docker that ships with DSM 7.2 does not evaluate the main compose file correctly (Docker version 24,02 on my Synology)
+
+**Step1**: You should generate the target compose file on the machine where you run the playbook (see prerequisites)
+
+```
+$ cd <repodir>/agendav-stack
+$ docker compose config --no-path-resolution >dsm-compose.yaml
+$ cd ..
+$ tar -cvf agendav-stack.tar agendav-stack
+```
+
+The --no-path-resolution switch is important because the resulting compose file will not  resolve file paths to absolute paths. Which means the agendav-stack folder can be moved from one folder or machine to another folder or machine
+
+
+
+**Step2**: **On the Synology**
+
+Copy the tar file you created in the previous step to your Docker folder and ssh to the synology
+
+```bash
+$ cd <Docker Directory>
+$ tar -xvf agendav-stack.tar
+$ cd agendav-stack
+$ mv dsm-compose.yaml compose.yaml # effectively delete the old version of compose.com
+$ docker compose up -d   # start the stack
+```
+
+**note** On my NAS mariadb takes too much time to start and the stacks does not start successfully the first time (times out). If this happens start the stack a second time.
+
+
+
+**note**: The stack does not start correctly when imported into Container Manager. I believe this is because db-init terminates (which is expected) but Container Manager considers this an error when it is not. I will fix this in the near future
+
+**note**: Because I use the login portal/reverse proxy I configure the following ports as shown below (vars/overrides.yaml) . Which means you dont have to open the ports 8080 and 8081 in the firewall
+
+```
+baikal_published_port: 127.0.0.1:8081
+agendav_published_port: 127.0.0.1:8080
+```

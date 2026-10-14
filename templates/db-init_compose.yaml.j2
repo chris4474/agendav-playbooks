@@ -14,4 +14,4 @@ services:
     entrypoint: /init_db.sh
 networks:
   mariadb_network:
-    external: true
+    name: mariadb_net

@@ -17,9 +17,9 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
 
-networks:
-  mariadb_network:
-    external: true
-
 volumes:
   mariadb_data:
+
+networks:
+  mariadb_network:
+    name: mariadb_net

@@ -3,6 +3,7 @@
 #
 
 compose_folder: "{{ playbook_dir }}/agendav-stack"
+playbook_version_file: "{{ playbook_dir}}/version_do_not_delete.txt"
 
 #
 # the baikal_db_* variables are used
@@ -60,7 +61,7 @@ agendav_published_port: 0.0.0.0:8080
 agendav_timezone: Europe/Paris
 agendav_weekstart: 1
 agendav_lang: en
-agendav_title: "Agendav Calendar 3.3.1 (playbook 3.3.1)"
+agendav_title: "Agendav Calendar 3.3.1 (playbook {{ playbook_version }})"
 agendav_footer: "Agendav Default Footer"
 
 #

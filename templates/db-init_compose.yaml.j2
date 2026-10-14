@@ -12,6 +12,11 @@ services:
     networks:
       - mariadb_network
     entrypoint: /init_db.sh
+    healthcheck:
+      test: ["CMD", "test", "-f", "/tmp/db_initialized"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
 networks:
   mariadb_network:
-    name: mariadb_net

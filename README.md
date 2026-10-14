@@ -1,6 +1,10 @@
-# Agendav playbooks v3.3.1b
+# Agendav playbooks v3.3.1c
 
-(Added some support for Synology DSM 7.* Deployments)
+- Better Support for deployments on Synology DSM 7.*. db-init container does not exit when its job is done
+
+- baikal image set to 0.12.1
+
+- docker compose file now uses an internal network rather than an external network
 
 ## Introduction
 
@@ -35,7 +39,7 @@ The agendav image being used can be found [here](https://github.com/chris4474/ag
 ```bash
 git clone https://github.com/chris4474/agendav-playbooks.git
 cd agendav-playbooks
-git checkout 3.3.1
+git checkout 3.3.1c
 ```
 
 The diagram below shows the directory structure of the playbooks. The actual structure may differ slightly but the main files are shown below:
@@ -136,11 +140,7 @@ Because my docker host is a server (no graphical interface) I use `socat` to mir
 
 When done I can reach the Baikal UI form outside and add users and calendars
 
-
-
 ## Deployment on Synology DSM 7.2
-
-The Docker that ships with DSM 7.2 does not evaluate the main compose file correctly (Docker version 24,02 on my Synology)
 
 **Step1**: You should generate the target compose file on the machine where you run the playbook (see prerequisites)
 
@@ -151,29 +151,33 @@ $ cd ..
 $ tar -cvf agendav-stack.tar agendav-stack
 ```
 
-The --no-path-resolution switch is important because the resulting compose file will not  resolve file paths to absolute paths. Which means the agendav-stack folder can be moved from one folder or machine to another folder or machine
-
-
+The --no-path-resolution switch is important because the resulting compose file will not  resolve file paths to absolute paths. Which means the agendav-stack folder can be moved from one folder or machine to another folder or machine. 
 
 **Step2**: **On the Synology**
 
-Copy the tar file you created in the previous step to your Docker folder and ssh to the synology
+Copy the tar file you created in the previous step to your Docker folder and ssh to the synology (the tar will create a directory ./agendav-stack)
 
 ```bash
 $ cd <Docker Directory>
 $ tar -xvf agendav-stack.tar
 $ cd agendav-stack
 $ mv dsm-compose.yaml compose.yaml # effectively delete the old version of compose.com
-$ docker compose up -d   # start the stack
 ```
 
-**note** On my NAS mariadb takes too much time to start and the stacks does not start successfully the first time (times out). If this happens start the stack a second time.
+****Step3**: Start the stack
 
+You can do it from the shell if you are still connected to the Synology server with:
 
+```
+ $ cd <directory containing the compose.yaml file>
+ $ docker compose up -d
+```
 
-**note**: The stack does not start correctly when imported into Container Manager. I believe this is because db-init terminates (which is expected) but Container Manager considers this an error when it is not. I will fix this in the near future
+Alternatively use the DSM Container Manager:  create a project, select the folder your created durind step2 and chose to use the existing compose file.
 
-**note**: Because I use the login portal/reverse proxy I configure the following ports as shown below (vars/overrides.yaml) . Which means you dont have to open the ports 8080 and 8081 in the firewall
+**note** On my NAS mariadb took too much time to start the first time and the stack failed.  If this happens start the stack a second time.
+
+**note**: Because I use the login portal/reverse proxy I configure the following ports as shown below (vars/overrides.yaml) before running the playbook `buildstack.yaml`. Which means you dont have to open the ports 8080 and 8081 in the firewall.
 
 ```
 baikal_published_port: 127.0.0.1:8081

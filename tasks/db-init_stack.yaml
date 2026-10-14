@@ -34,6 +34,7 @@
     - templates/db-init/000-create-baikal-db.sh.j2
     - templates/db-init/010-load-baikal-db-schema.sh.j2
     - templates/db-init/020-create-agendav-db.sh.j2
+    - templates/db-init/999-healthy.sh.j2
     - templates/db-init/zzz-create-agendav-db.sql.j2
     - templates/db-init/zzz-baikal-db-schema.sql.j2
     - templates/db-init/zzz-create-baikal-db.sql.j2

@@ -1,12 +1,12 @@
 services:
   baikal:
-    image: ghcr.io/aalmenar/baikal:latest
+    image: ghcr.io/aalmenar/baikal:0.12.1
 {% if generate_full_stack | default(false) %}
     depends_on:
       mariadb:
         condition: service_healthy
       db-init:
-        condition: service_completed_successfully
+        condition: service_healthy
 {% endif %}
     networks:
       - mariadb_network
@@ -23,4 +23,3 @@ volumes:
  
 networks:
   mariadb_network:
-    name: mariadb_net

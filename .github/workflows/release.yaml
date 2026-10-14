@@ -42,7 +42,7 @@ jobs:
           REPO_NAME=${{ steps.info.outputs.repo_name }}
           
           # L'archive prendra automatiquement le nom du repo (ex: agendav-playbooks-v1.0.0.tar.gz)
-          tar -czf ${REPO_NAME}-$VERSION.tar.gz --exclude='.git' --exclude='*.tar.gz' .
+          tar --warning=no-file-changed -czf ${REPO_NAME}-$VERSION.tar.gz --exclude='.git' --exclude='*.tar.gz' .
 
       - name: Create GitHub Release and Upload Assets
         uses: softprops/action-gh-release@v2

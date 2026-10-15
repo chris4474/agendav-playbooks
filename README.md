@@ -1,4 +1,4 @@
-# Agendav playbooks v3.3.1c
+# Agendav playbooks
 
 - Better Support for deployments on Synology DSM 7.*. db-init container does not exit when its job is done
 
@@ -39,7 +39,7 @@ The agendav image being used can be found [here](https://github.com/chris4474/ag
 ```bash
 git clone https://github.com/chris4474/agendav-playbooks.git
 cd agendav-playbooks
-git checkout 3.3.1c
+git checkout 
 ```
 
 The diagram below shows the directory structure of the playbooks. The actual structure may differ slightly but the main files are shown below:

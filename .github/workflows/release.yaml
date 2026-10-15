@@ -1,7 +1,9 @@
 name: Release Pipeline
 
 on:
-  workflow_dispatch:
+  push:
+    tags:
+      - 'v*.*.*-test'
 
 jobs:
   release:
@@ -13,41 +15,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Get Version and Repository Name
-        id: info
-        run: |
-          # Récupération de la version Git
-          VERSION=$(git describe --tags --always)
-          echo "tag_version=$VERSION" >> $GITHUB_OUTPUT
-          
-          # Extraction du nom du dépôt depuis github.repository (ex: 'chris4474/agendav-playbooks' devient 'agendav-playbooks')
-          REPO_NAME=$(basename "${{ github.repository }}")
-          echo "repo_name=$REPO_NAME" >> $GITHUB_OUTPUT
-          
-          echo "Dépôt : $REPO_NAME | Version : $VERSION"
 
       - name: Generate version file
-        run: |
-          VERSION=${{ steps.info.outputs.tag_version }}
-          echo "$VERSION" > version_do_not_delete.txt
+        run: echo "${{ github.ref_name }}" > version_do_not_delete.txt
 
       - name: Create Release Archive
         run: |
-          VERSION=${{ steps.info.outputs.tag_version }}
-          REPO_NAME=${{ steps.info.outputs.repo_name }}
-          
-          # L'archive prendra automatiquement le nom du repo (ex: agendav-playbooks-v1.0.0.tar.gz)
-          tar --warning=no-file-changed -czf ${REPO_NAME}-$VERSION.tar.gz --exclude='.git' --exclude='*.tar.gz' .
+          tar -czf "$RUNNER_TEMP/${{ github.event.repository.name }}-${{ github.ref_name }}.tar.gz" \
+            --exclude="${{ github.event.repository.name }}/.git" \
+            --exclude="${{ github.event.repository.name }}/.github" \
+            -C .. \
+            "${{ github.event.repository.name }}"
 
       - name: Create GitHub Release and Upload Assets
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            version_do_not_delete.txt
-            ${{ steps.info.outputs.repo_name }}-${{ steps.info.outputs.tag_version }}.tar.gz
+          tag_name: ${{ github.ref_name }}
+          files: ${{ runner.temp }}/${{ github.event.repository.name }}-${{ github.ref_name }}.tar.gz
           generate_release_notes: true
           draft: false
           prerelease: true

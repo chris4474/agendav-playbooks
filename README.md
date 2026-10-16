@@ -1,11 +1,5 @@
 # Agendav playbooks
 
-- Better Support for deployments on Synology DSM 7.*. db-init container does not exit when its job is done
-
-- baikal image set to 0.12.1
-
-- docker compose file now uses an internal network rather than an external network
-
 ## Introduction
 
 The purpose of these ansible playbooks is to generate a docker compose file which will be used to deploy a complete [agendav ](https://github.com/agendav/agendav))stack.
@@ -142,20 +136,7 @@ When done I can reach the Baikal UI form outside and add users and calendars
 
 ## Deployment on Synology DSM 7.2
 
-**Step1**: You should generate the target compose file on the machine where you run the playbook (see prerequisites)
-
-```
-$ cd <repodir>/agendav-stack
-$ docker compose config --no-path-resolution >dsm-compose.yaml
-$ cd ..
-$ tar -cvf agendav-stack.tar agendav-stack
-```
-
-The --no-path-resolution switch is important because the resulting compose file will not  resolve file paths to absolute paths. Which means the agendav-stack folder can be moved from one folder or machine to another folder or machine. 
-
-**Step2**: **On the Synology**
-
-Copy the tar file you created in the previous step to your Docker folder and ssh to the synology (the tar will create a directory ./agendav-stack)
+**Step1**: The playbook generates a file named `stack.tar` in the `agendav-stack` directory. Copy this file to the Docker shared folder of you Synology and ssh to the synology.
 
 ```bash
 $ cd <Docker Directory>
@@ -164,7 +145,8 @@ $ cd agendav-stack
 $ mv dsm-compose.yaml compose.yaml # effectively delete the old version of compose.com
 ```
 
-****Step3**: Start the stack
+
+****Step2**: Start the stack
 
 You can do it from the shell if you are still connected to the Synology server with:
 
@@ -173,7 +155,8 @@ You can do it from the shell if you are still connected to the Synology server w
  $ docker compose up -d
 ```
 
-Alternatively use the DSM Container Manager:  create a project, select the folder your created durind step2 and chose to use the existing compose file.
+Alternatively use the DSM Container Manager:  create a project, select the folder your created durind step1 and chose to use the existing compose file.
+
 
 **note** On my NAS mariadb took too much time to start the first time and the stack failed.  If this happens start the stack a second time.
 

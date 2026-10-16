@@ -43,6 +43,3 @@
       ansible.builtin.import_tasks:
         file: tasks/buildscripts.yaml
       when: standalone is defined
-
-
-

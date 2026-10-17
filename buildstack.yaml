@@ -12,11 +12,6 @@
       ansible.builtin.import_tasks:
         file: tasks/playbook_version.yaml 
      
-    - name: Full Stack or Standalone compose files
-      ansible.builtin.set_fact:
-        generate_full_stack: True
-      when: standalone is not defined
-
     - name: Build Baikal Docker Compose files
       ansible.builtin.import_tasks:
         file: tasks/baikal_stack.yaml 
@@ -32,14 +27,8 @@
     - name: Build db-init Docker Compose files
       ansible.builtin.import_tasks:
         file: tasks/db-init_stack.yaml
-      when: generate_full_stack is defined
 
     - name: Full Stack assembly
       ansible.builtin.include_tasks:
         file: tasks/fullstack_assembly.yaml
-      when: generate_full_stack is defined
 
-    - name: Build utilities
-      ansible.builtin.import_tasks:
-        file: tasks/buildscripts.yaml
-      when: standalone is defined

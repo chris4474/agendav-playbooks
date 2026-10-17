@@ -9,3 +9,51 @@
     src: templates/fullstack_compose.yaml.j2
     dest: "{{ compose_folder }}/compose.yaml"
 
+
+- name: Ensure user local bin directory exists
+  ansible.builtin.file:
+    path: "{{ lookup('env','HOME') }}/.local/bin"
+    state: directory
+    mode: '0755'
+
+- name: Download Docker Compose standalone binary
+  ansible.builtin.get_url:
+    url: "https://github.com/docker/compose/releases/download/v5.6.0/docker-compose-linux-x86_64"
+    checksum: "sha256:40343e21ca777173e69cff5dbafeb37c6f81f3b0d57d9e597f036e95eb63e76a"
+    dest:  "{{ lookup('env','HOME') }}/.local/bin/docker-compose"
+    mode: '0755'
+
+- name: Create a temporary file for the compilation output
+  ansible.builtin.tempfile:
+    state: file
+    suffix: .tmp
+  register: temp_compose
+  changed_when: false
+
+- name: Run docker-compose config
+  ansible.builtin.command: |
+    "{{ lookup('env','HOME') }}/.local/bin/docker-compose" \
+      -f "{{ compose_folder }}/compose.yaml" \
+      config --no-path-resolution --output {{ temp_compose.path }}
+  args:
+    chdir: "{{ compose_folder }}"
+  register: compose_check
+  changed_when: false
+
+- name: Standalone compose file
+  ansible.builtin.copy:
+    src: "{{ temp_compose.path }}"
+    dest: "{{ compose_folder }}/dsm.compose.yaml"
+
+- name: Cleanup temporary file
+  ansible.builtin.file:
+    path: "{{ temp_compose.path }}"
+    state: absent
+  changed_when: false
+
+- name: Create Archive
+  ansible.builtin.archive:
+    path: "{{ compose_folder }}"
+    dest: "{{ compose_folder }}/stack.tar"
+    exclude_path: "{{ compose_folder }}/stack.tar"
+    format: tar

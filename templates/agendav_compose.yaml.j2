@@ -2,7 +2,7 @@ services:
   agendav:
     image: {{ agendav_image }}
     pull_policy: always
-{% if generate_full_stack | default(false) %}
+{% if generate_full_stack | default(true) %}
     depends_on:
       mariadb:
         condition: service_healthy

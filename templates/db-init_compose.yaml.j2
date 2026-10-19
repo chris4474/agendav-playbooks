@@ -1,7 +1,7 @@
 services:
   db-init:
     image: mariadb:10
-{% if generate_full_stack | default(false) %}
+{% if generate_full_stack | default(true) %}
     depends_on:
       mariadb:
         condition: service_healthy

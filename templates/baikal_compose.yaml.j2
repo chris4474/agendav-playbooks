@@ -1,7 +1,7 @@
 services:
   baikal:
     image: ghcr.io/aalmenar/baikal:0.12.1
-{% if generate_full_stack | default(false) %}
+{% if generate_full_stack | default(true) %}
     depends_on:
       mariadb:
         condition: service_healthy

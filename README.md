@@ -1,10 +1,12 @@
+![Latest Release](https://img.shields.io/github/v1/release/chris4474/agendav-playbooks?color=blue&style=flat-square)
 # Agendav playbooks
 
-## Preliminary Note Upgrading from baikal 0.12.1 to baikal 0.13.0
+## Release note:
 
-Due to vulnerabilities in PHP 8.5 (CVE-2026-109618 & CVE-2026-109619) the playbook is now using ghcr.io/aalmenar/baikal:0.13.0 and an updated version of ghcr.io/chris4474/agendav-docker:playbooks-3.3.1 (I should probably change the version number of the agendav-docker image)
+Adresses PHP 8.5 vulnerabilities (CVE-2026-109618 & CVE-2026-109619).  The playbook is now using ghcr.io/aalmenar/baikal:0.13.0 and an updated version of ghcr.io/chris4474/agendav-docker:playbooks-3.3.1 (I should probably change the version number of the agendav-docker image)
 
-If you migrated your stack from ghcr.io/aalmenar/baikal:0.12.1 to ghcr.io/aalmenar/baikall 0.13.0 (which you ABSOLUTELY SHOULD) you must access the baikal UI first to initiate a database migration. if you don't do so the agendav UI will return an "internal error"when you try to login agendav.
+The playbook now generates a config file for baikal which us compatible with version 0.13.0 of the container image. However if you updated the image in the compose file and reloaded the stack baikal will detect an older version of the baikal config file and will not fully start. You will have to access the baikal UI and press the button "Start migration"
+
 
 ## Introduction
 The purpose of these ansible playbooks is to generate a docker compose file which will be used to deploy a complete [agendav ](https://github.com/agendav/agendav))stack.

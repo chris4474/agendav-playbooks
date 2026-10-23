@@ -1,4 +1,4 @@
-![Latest Release](https://img.shields.io/github/v1/release/chris4474/agendav-playbooks?color=blue&style=flat-square)
+![Release](https://img.shields.io/github/v/release/chris4474/agendav-playbooks)
 # Agendav playbooks
 
 ## Release note:

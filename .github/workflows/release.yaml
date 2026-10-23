@@ -34,4 +34,4 @@ jobs:
           files: ${{ runner.temp }}/${{ github.event.repository.name }}-${{ github.ref_name }}.tar.gz
           generate_release_notes: true
           draft: false
-          prerelease: true
+          prerelease: false
